@@ -1,4 +1,5 @@
 truncate table silver.products;
+
 insert into silver.products (
     division,
     product_name,
@@ -7,6 +8,7 @@ insert into silver.products (
     unit_price,
     unit_cost
 )
+
 with products as (
     select * from bronze.products
 ),
