@@ -4,7 +4,10 @@ with products as (
 ),
 
 sales as (
-    select * from silver.sales
+    select
+        product_id,
+        order_date
+    from silver.sales
 ),
 
 recent_active_at as (
