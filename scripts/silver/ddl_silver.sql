@@ -35,37 +35,31 @@ create table silver.products (
     product_name varchar,
     factory varchar,
     product_id varchar,
-    unit_price varchar,
-    unit_cost varchar,
+    unit_price numeric,
+    unit_cost numeric,
     dwh_created_at timestamp default current_timestamp
 );
 
 drop table if exists silver.targets;
 create table silver.targets (
     division varchar,
-    target int,
+    target_2024 int,
     dwh_created_at timestamp default current_timestamp
 );
 
 drop table if exists silver.us_zips;
 create table silver.us_zips (
     zip varchar,
-    lat varchar,
-    lng varchar,
+    latitude numeric,
+    longitude numeric,
     city varchar,
     state_id varchar,
     state_name varchar,
-    zcta varchar,
-    parent_zcta varchar,
-    population varchar,
-    density varchar,
+    population int,
+    population_density numeric,
     county_fips varchar,
     county_name varchar,
-    county_weights JSONB,
-    county_names_all varchar,
-    county_fips_all varchar,
-    imprecise varchar,
-    military varchar,
+    is_military boolean,
     timezone varchar,
     dwh_created_at timestamp default current_timestamp
 );
