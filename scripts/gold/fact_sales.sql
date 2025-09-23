@@ -2,24 +2,31 @@ create or replace view gold.fact_sales as
 with sales as (
     select * from silver.sales
 ),
+
 dim_product as (
     select product_key, source_id from gold.dim_product
 ),
+
 dim_customer as (
     select customer_key, customer_id from gold.dim_customer
 ),
+
 dim_factory as (
     select factory_key, factory_name from gold.dim_factory
 ),
+
 products as (
     select product_id, factory from silver.products
 ),
+
 factory as (
     select factory, latitude, longitude from silver.factory
 ),
+
 dim_location as (
     select location_key, postal_code, latitude, longitude from gold.dim_location
 ),
+
 joined as (
     select
         case
@@ -67,6 +74,7 @@ joined as (
         on factory.latitude = factory_location.latitude
             and factory.longitude = factory_location.longitude
 ),
+
 renamed as (
     select
         product_key,
@@ -85,6 +93,7 @@ renamed as (
         row_id as source_id
     from joined
 ),
+
 final as (
     select
         product_key,
@@ -103,4 +112,5 @@ final as (
         source_id
     from renamed
 )
+
 select * from final;
