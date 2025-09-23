@@ -1,3 +1,5 @@
+
+
 create or replace view gold.dim_location as
 with uszips as (
     select * from silver.us_zips
@@ -70,18 +72,18 @@ dim_location as (
     select
         md5(postal_code) as location_key,
         postal_code,
-        latitude,
-        longitude,
+        coalesce(latitude, -1) as latitude,
+        coalesce(longitude, -1) as longitude,
         case when length(postal_code) = 5 then 'United States' else country end as country,
-        region,
-        city,
-        state_id,
-        state_name,
-        county_name,
-        population,
-        population_density,
-        is_military,
-        timezone
+        coalesce(region, 'Unknown') as region,
+        coalesce(city, 'Unknown') as city,
+        coalesce(state_id, 'Unknown') as state_id,
+        coalesce(state_name, 'Unknown') as state_name,
+        coalesce(county_name, 'Unknown') as county_name,
+        coalesce(population, -1) as population,
+        coalesce(population_density, -1) as population_density,
+        coalesce(is_military, False) as is_military,
+        coalesce(timezone, 'Unknown') as timezone
     from joined
 ),
 
@@ -89,8 +91,8 @@ seed as (
     select
         md5('Unknown') as location_key,
         'Unknown' as postal_code,
-        'Unknown' as latitude,
-        'Unknown' as longitude,
+        -1 as latitude,
+        -1 as longitude,
         'Unknown' as country,
         'Unknown' as region,
         'Unknown' as city,
@@ -99,24 +101,24 @@ seed as (
         'Unknown' as county_name,
         -1 as population,
         -1 as population_density,
-        False as is_military,
+        false as is_military,
         'Unknown' as timezone
     union all
     select
         md5('Not Available') as location_key,
         'Not Available' as postal_code,
-        null as latitude,
-        null as longitude,
+        -2 as latitude,
+        -2 as longitude,
         'Not Available' as country,
-        null as region,
-        null as city,
-        null as state_id,
-        null as state_name,
-        null as county_name,
+        'Not Available' as region,
+        'Not Available' as city,
+        'Not Available' as state_id,
+        'Not Available' as state_name,
+        'Not Available' as county_name,
         -2 as population,
         -2 as population_density,
-        False as is_military,
-        null as timezone
+        false as is_military,
+        'Not Available' as timezone
 ),
 
 unioned as (
